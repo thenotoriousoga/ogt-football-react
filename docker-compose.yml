@@ -1,0 +1,23 @@
+# docker-compose.yml
+
+version: "3.8"
+
+services:
+  # サービスの定義
+  frontend:
+    # 💡 現在のディレクトリにあるDockerfileを使ってイメージをビルド
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # 💡 ホスト(ローカルPC)のポートとコンテナのポートをマッピング
+    # "ホストポート:コンテナポート"
+    ports:
+      - "5173:5173"
+    # 💡 ローカルのコード変更をコンテナに即座に反映させるためのボリュームマウント
+    volumes:
+      - .:/app
+      # Node.jsの依存関係はコンテナ内で管理するため、上書きを避ける
+      - /app/node_modules
+    # 開発モードで必要な設定
+    stdin_open: true # npm run devなどの対話型操作を可能にする
+    tty: true # 擬似ターミナルを割り当て、ログの表示などを維持する
